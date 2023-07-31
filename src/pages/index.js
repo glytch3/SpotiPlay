@@ -131,7 +131,7 @@ export default function Home() {
             <TableRow>
               <TableCell>Song Name</TableCell>
               <TableCell align="right">YouTube Link</TableCell>
-              {/* <TableCell align="right">Download</TableCell> */}
+              <TableCell align="right">Download</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -151,7 +151,7 @@ export default function Home() {
                       : "To be fetched..."
                     }
                   </TableCell>
-                  {/* <TableCell align="right">
+                  <TableCell align="right">
                     {songVideo
                       ? <>
                         <a href={`/api/download?id=${songVideo.id}&format=mp4&name=${encodeURIComponent(songVideo.name)}`}>Video</a> |
@@ -160,7 +160,7 @@ export default function Home() {
                       </>
                       : "Fetching video link..."
                     }
-                  </TableCell> */}
+                  </TableCell>
 
                 </TableRow>
               );

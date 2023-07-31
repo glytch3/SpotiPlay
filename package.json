@@ -20,6 +20,8 @@
     "axios": "^1.4.0",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
+    "ffmpeg-static": "^5.1.0",
+    "fluent-ffmpeg": "^2.1.2",
     "formidable": "^3.5.0",
     "next": "^13.4.12",
     "postcss": "8.4.27",
