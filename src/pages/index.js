@@ -12,6 +12,7 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
+import '../styles/index.css';
 
 export default function Home() {
   const [playlistLink, setPlaylistLink] = useState("");
@@ -104,71 +105,88 @@ export default function Home() {
 
   return (
     <div>
-      <form onSubmit={handleFormSubmit}>
-        <TextField
-          id="outlined-basic"
-          label="Spotify Playlist URL"
-          variant="outlined"
-          value={playlistLink}
-          onChange={handleInputChange}
-        />
-        <Button type="submit" variant="contained">
-          <PlayArrowOutlinedIcon />
-        </Button>
-      </form>
+      <div className="formdiv">
+        <form onSubmit={handleFormSubmit}>
+          <TextField
+            id="outlined-basic"
+            label="Spotify Playlist URL"
+            variant="outlined"
+            value={playlistLink}
+            onChange={handleInputChange}
+            InputLabelProps={{
+              classes: {
+                root: 'custom-label',
+              },
+            }}
+          />
+          <Button type="submit" variant="contained" className="submitbutton">
+            <PlayArrowOutlinedIcon className="playIcon" fontSize="large" />
+          </Button>
+        </form>
+      </div>
+
 
       {!isLoading && songVideos.length > 0 && (
-        <YouTube
-          videoId={songVideos[currentSongIndex].id}
-          onEnd={handleSongEnd}
-          opts={{ playerVars: { autoplay: 1, mute: 0 } }}
-        />
+        <div>
+          <div className="youtube-container">
+            <YouTube
+              className="youtube-video"
+              videoId={songVideos[currentSongIndex].id}
+              onEnd={handleSongEnd}
+              opts={{ playerVars: { autoplay: 1, mute: 0 } }}
+            />
+          </div>
+        </div>)}
+      {songVideos.length > 0 && (
+        <div>
+          <div>
+            <TableContainer component={Paper} className="myTable">
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Song Name</TableCell>
+                    <TableCell align="right">YouTube Link</TableCell>
+                    <TableCell align="right">Download</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {songs.map((song, index) => {
+                    const songVideo = songVideos.find(songVideo => songVideo.name === song);
+                    return (
+                      <TableRow
+                        key={index}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      >
+                        <TableCell component="th" scope="row">
+                          {song}
+                        </TableCell>
+                        <TableCell align="right">
+                          {songVideo
+                            ? <a href={`https://www.youtube.com/watch?v=${songVideo.id}`}>Link</a>
+                            : "To be fetched..."
+                          }
+                        </TableCell>
+                        <TableCell align="right">
+                          {songVideo
+                            ? <>
+                              <a href={`/api/download?id=${songVideo.id}&format=mp4&name=${encodeURIComponent(songVideo.name)}`}>Video</a> |
+                              <a href={`/api/download?id=${songVideo.id}&format=mp3&name=${encodeURIComponent(songVideo.name)}`}>Audio</a>
+
+                            </>
+                            : "Fetching video link..."
+                          }
+                        </TableCell>
+
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+
+              </Table>
+            </TableContainer>
+          </div>
+        </div>
       )}
-
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Song Name</TableCell>
-              <TableCell align="right">YouTube Link</TableCell>
-              <TableCell align="right">Download</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {songs.map((song, index) => {
-              const songVideo = songVideos.find(songVideo => songVideo.name === song);
-              return (
-                <TableRow
-                  key={index}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {song}
-                  </TableCell>
-                  <TableCell align="right">
-                    {songVideo
-                      ? <a href={`https://www.youtube.com/watch?v=${songVideo.id}`}>Link</a>
-                      : "To be fetched..."
-                    }
-                  </TableCell>
-                  <TableCell align="right">
-                    {songVideo
-                      ? <>
-                        <a href={`/api/download?id=${songVideo.id}&format=mp4&name=${encodeURIComponent(songVideo.name)}`}>Video</a> |
-                        <a href={`/api/download?id=${songVideo.id}&format=mp3&name=${encodeURIComponent(songVideo.name)}`}>Audio</a>
-
-                      </>
-                      : "Fetching video link..."
-                    }
-                  </TableCell>
-
-                </TableRow>
-              );
-            })}
-          </TableBody>
-
-        </Table>
-      </TableContainer>
     </div>
   );
 }

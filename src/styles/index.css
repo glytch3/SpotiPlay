@@ -1,0 +1,92 @@
+/* index.css */
+
+body {
+    background-color: black;
+}
+
+.formdiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px;
+    margin-bottom: 20px;
+}
+
+.submitbutton {
+    height: 54.56px;
+    margin-left: 15px;
+    background-color: #555555;
+}
+
+.submitbutton.MuiButton-contained:hover {
+    background-color: #1DB954;
+}
+
+.playIcon:hover {
+    transform: scale(1.2);
+  }
+  
+
+.MuiInputLabel-root {
+    color: white;
+}
+
+.MuiOutlinedInput-root {
+    & fieldset {
+        border-color: gray;
+    }
+
+    &:hover fieldset,
+    &.Mui-focused fieldset {
+        border-color: grey;
+    }
+}
+
+.MuiOutlinedInput-input {
+    background-color: black;
+}
+
+.MuiInputBase-input {
+    color: white;
+}
+
+.youtube-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    padding: 0;
+}
+
+@keyframes rotate {
+    to {
+        --angle: 1turn;
+    }
+}
+
+.youtube-video {
+    border: 8px solid;
+    border-image: conic-gradient(from var(--angle), purple, mediumorchid, violet, lavender, thistle, plum, purple) 1;
+    animation: 2s rotate linear infinite;
+    padding: 0px;
+    margin: 0px;
+}
+
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.myTable {
+    width: 60%;
+    background-color: white;
+    color: white;
+    margin: 0 auto;
+  }
+ 
+  .myTable td:nth-child(2), .myTable th:nth-child(2),
+  .myTable td:nth-child(3), .myTable th:nth-child(3) {
+    width: 20%;
+    text-align: center; 
+  }
