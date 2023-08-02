@@ -141,7 +141,7 @@ export default function Home() {
         <div>
           <div>
             <TableContainer component={Paper} className="myTable">
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <Table sx={{ minWidth: 300 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
                     <TableCell>Song Name</TableCell>
