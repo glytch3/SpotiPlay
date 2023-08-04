@@ -13,6 +13,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 import '../styles/index.css';
+import { Grid, Typography, Link } from '@mui/material';
+
 
 export default function Home() {
   const [playlistLink, setPlaylistLink] = useState("");
@@ -139,51 +141,39 @@ export default function Home() {
         </div>)}
       {songVideos.length > 0 && (
         <div>
-          <div>
-            <TableContainer component={Paper} className="myTable">
-              <Table sx={{ minWidth: 300 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Song Name</TableCell>
-                    <TableCell align="right">YouTube Link</TableCell>
-                    <TableCell align="right">Download</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {songs.map((song, index) => {
-                    const songVideo = songVideos.find(songVideo => songVideo.name === song);
-                    return (
-                      <TableRow
-                        key={index}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {song}
-                        </TableCell>
-                        <TableCell align="right">
-                          {songVideo
-                            ? <a href={`https://www.youtube.com/watch?v=${songVideo.id}`}>Link</a>
-                            : "To be fetched..."
-                          }
-                        </TableCell>
-                        <TableCell align="right">
-                          {songVideo
-                            ? <>
-                              <a href={`/api/download?id=${songVideo.id}&format=mp4&name=${encodeURIComponent(songVideo.name)}`}>Video</a> |
-                              <a href={`/api/download?id=${songVideo.id}&format=mp3&name=${encodeURIComponent(songVideo.name)}`}>Audio</a>
-
-                            </>
-                            : "Fetching video link..."
-                          }
-                        </TableCell>
-
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-
-              </Table>
-            </TableContainer>
+          <div className="parent-container">
+            <div className="scroll-container">
+              {songs.map((song, index) => {
+                const songVideo = songVideos.find(songVideo => songVideo.name === song);
+                return (
+                  <div key={index} className="song-container">
+                    <div className="song-details">
+                      <Typography gutterBottom variant="subtitle1">
+                        {song}
+                      </Typography>
+                      <Typography>
+                        {songVideo
+                          ? <Link href={`https://www.youtube.com/watch?v=${songVideo.id}`} target="_blank" rel="noopener noreferrer">
+                            Youtube Link
+                          </Link>
+                          : "To be fetched..."
+                        }
+                      </Typography>
+                      <Typography>
+                        {songVideo
+                          ? <>
+                            <Link href={`/api/download?id=${songVideo.id}&format=mp4&name=${encodeURIComponent(songVideo.name)}`}>Video</Link>
+                            |
+                            <Link href={`/api/download?id=${songVideo.id}&format=mp3&name=${encodeURIComponent(songVideo.name)}`}>Audio</Link>
+                          </>
+                          : "Fetching video link..."
+                        }
+                      </Typography>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       )}
