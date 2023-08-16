@@ -14,6 +14,8 @@ import Button from '@mui/material/Button';
 import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 import '../styles/index.css';
 import { Grid, Typography, Link } from '@mui/material';
+import dotenv from "dotenv";
+dotenv.config();
 
 
 export default function Home() {
@@ -28,8 +30,8 @@ export default function Home() {
     const getClientCredentials = async () => {
       const data = {
         grant_type: "client_credentials",
-        client_id: "3bbdcdbac77a43f8b4c5a0ff7c57005f",
-        client_secret: "9282b9754e38462a9f787c37241ac7f9",
+        client_id: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
+        client_secret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET,
       };
 
       const options = {
@@ -58,7 +60,7 @@ export default function Home() {
         params: {
           part: "snippet",
           q: songName,
-          key: "AIzaSyC0mjl8fKIP08XOwPIczgOmAAiP82qthRs",
+          key: process.env.NEXT_PUBLIC_YOUTUBE_API_KEY,
           type: "video",
           maxResults: 1,
         },
