@@ -66,7 +66,8 @@ body {
 
 .youtube-video {
     border: 8px solid;
-    border-image: conic-gradient(from var(--angle), purple, mediumorchid, violet, lavender, thistle, plum, purple) 1;
+    border-image: conic-gradient(from var(--angle), #FF0000, #FF4500, #FF6347, #FF7F50, #FF8C00, #FFA500, #FF8C00, #FF7F50, #FF6347, #FF4500, #FF0000) 1;
+    /* border-image: conic-gradient(from var(--angle), purple, mediumorchid, violet, lavender, thistle, plum, purple) 1; */
     animation: 2s rotate linear infinite;
     padding: 0px;
     margin: 0px;
@@ -118,18 +119,21 @@ body {
     transition: 0.3s;
     color: white;
     background-color: rgb(43, 43, 43);
+    border-radius: 14px;
   }
   
   .song-container:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px 0 #FF4500;
   }
   
   /* CSS for song details */
   .song-details {
     display: flex;
-    flex-direction: column;
-    align-items:flex-start;
-    justify-content: center;
+    flex-direction: row;
+    gap: 20px;
   }
-
+  .cover-art-image {
+    width: 100px;
+    border-radius: 10px;
+  }
   

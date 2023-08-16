@@ -25,6 +25,8 @@ export default function Home() {
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [songVideos, setSongVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [coverArtUrls, setCoverArtUrls] = useState([]);
+
 
   useEffect(() => {
     const getClientCredentials = async () => {
@@ -84,13 +86,22 @@ export default function Home() {
       }
     );
 
-    const songNames = response.data.items.map((item) => item.track.name);
-    setSongs(songNames);
+    const songsData = response.data.items.map((item) => ({
+      name: item.track.name,
+      coverArtUrl: item.track.album.images[0].url,
+    }));
 
-    const firstSongVideo = { name: songNames[0], id: await fetchSongVideoId(songNames[0]) };
+    setSongs(songsData.map((song) => song.name));
+    setCoverArtUrls(songsData.map((song) => song.coverArtUrl));
+
+    const firstSongVideo = {
+      name: songsData[0].name,
+      id: await fetchSongVideoId(songsData[0].name),
+    };
     setSongVideos([firstSongVideo]);
     setIsLoading(false);
   };
+
 
   const handleSongEnd = async () => {
     setIsLoading(true);
@@ -150,6 +161,10 @@ export default function Home() {
                 return (
                   <div key={index} className="song-container">
                     <div className="song-details">
+                      <div className="cover-art">
+                        <img src={coverArtUrls[index]} alt="Cover Art" className="cover-art-image" />
+                      </div>
+                      <div>
                       <Typography gutterBottom variant="subtitle1">
                         {song}
                       </Typography>
@@ -171,6 +186,7 @@ export default function Home() {
                           : "Fetching video link..."
                         }
                       </Typography>
+                      </div>
                     </div>
                   </div>
                 );
