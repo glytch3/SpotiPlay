@@ -1,5 +1,5 @@
 
-# SpotiPlay - Spotify Playlist to YouTube Player
+# SpotiPlay - Spotify Playlist to YouTube Player & Downloader
 
 This project uses Next.js to create a web app that allows users to enter a Spotify playlist URL and then play the songs in the playlist on YouTube.
 
@@ -48,3 +48,9 @@ To get the YouTube API key, you will need to create a Google Cloud Platform proj
 To use the app, enter the Spotify playlist URL in the form and click the "Play" button. The songs in the playlist will be played on YouTube.
 
 You can also click on a song in the list to play it directly on YouTube.
+
+## Downloading Songs in Video and Audio Formats
+
+SpotiPlay allows users to download songs from Spotify playlists in both video and audio formats. This feature enables users to enjoy their favorite music offline or on different devices. To download a song, simply navigate to the desired playlist and click on the download button next to the song. The downloaded files will be saved to your device for offline playback.
+
+
