@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import qs from "qs";
 import YouTube from "react-youtube";
@@ -11,6 +11,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export default function Home() {
+  const YouTubePlayerRef = useRef(null);
   const [playlistLink, setPlaylistLink] = useState("");
   const [songs, setSongs] = useState([]);
   const [accessToken, setAccessToken] = useState("");
@@ -76,11 +77,22 @@ export default function Home() {
     }));
     setSongs(songsData.map((song) => song.name));
     setCoverArtUrls(songsData.map((song) => song.coverArtUrl));
-    const firstSongVideo = {
-      name: songsData[0].name,
-      id: await fetchSongVideoId(songsData[0].name),
-    };
-    setSongVideos([firstSongVideo]);
+    // Check if the number of songs is less than 10
+    if (songsData.length < 10) {
+      const songVideos = await Promise.all(
+        songsData.map(async (song) => ({
+          name: song.name,
+          id: await fetchSongVideoId(song.name),
+        }))
+      );
+      setSongVideos(songVideos);
+    } else {
+      const firstSongVideo = {
+        name: songsData[0].name,
+        id: await fetchSongVideoId(songsData[0].name),
+      };
+      setSongVideos([firstSongVideo]);
+    }
     setIsLoading(false);
   };
 
@@ -96,6 +108,15 @@ export default function Home() {
     setIsLoading(false);
   };
 
+  const handleSongClick = (index) => {
+    setCurrentSongIndex(index);
+    const songVideo = songVideos[index];
+    if (songVideo) {
+      const player = YouTubePlayerRef.current.internalPlayer;
+      player.loadVideoById(songVideo.id);
+      player.playVideo();
+    }
+  };
 
   return (
     <div>
@@ -118,12 +139,11 @@ export default function Home() {
           </Button>
         </form>
       </div>
-
-
       {!isLoading && songVideos.length > 0 && (
         <div>
           <div className="youtube-container">
             <YouTube
+              ref={YouTubePlayerRef}
               className="youtube-video"
               videoId={songVideos[currentSongIndex].id}
               onEnd={handleSongEnd}
@@ -138,33 +158,33 @@ export default function Home() {
               {songs.map((song, index) => {
                 const songVideo = songVideos.find(songVideo => songVideo.name === song);
                 return (
-                  <div key={index} className="song-container">
+                  <div key={index} className="song-container" onClick={() => handleSongClick(index)}>
                     <div className="song-details">
                       <div className="cover-art">
                         <img src={coverArtUrls[index]} alt="Cover Art" className="cover-art-image" />
                       </div>
                       <div>
-                      <Typography gutterBottom variant="subtitle1">
-                        {song}
-                      </Typography>
-                      <Typography>
-                        {songVideo
-                          ? <Link href={`https://www.youtube.com/watch?v=${songVideo.id}`} target="_blank" rel="noopener noreferrer">
-                            Youtube Link
-                          </Link>
-                          : "To be fetched..."
-                        }
-                      </Typography>
-                      <Typography>
-                        {songVideo
-                          ? <>
-                            <Link href={`/api/download?id=${songVideo.id}&format=mp4&name=${encodeURIComponent(songVideo.name)}`}>Video</Link>
-                            |
-                            <Link href={`/api/download?id=${songVideo.id}&format=mp3&name=${encodeURIComponent(songVideo.name)}`}>Audio</Link>
-                          </>
-                          : "Fetching video link..."
-                        }
-                      </Typography>
+                        <Typography gutterBottom variant="subtitle1">
+                          {song}
+                        </Typography>
+                        <Typography>
+                          {songVideo
+                            ? <Link href={`https://www.youtube.com/watch?v=${songVideo.id}`} target="_blank" rel="noopener noreferrer">
+                              Youtube Link
+                            </Link>
+                            : "To be fetched..."
+                          }
+                        </Typography>
+                        <Typography>
+                          {songVideo
+                            ? <>
+                              <Link href={`/api/download?id=${songVideo.id}&format=mp4&name=${encodeURIComponent(songVideo.name)}`}>Video</Link>
+                              |
+                              <Link href={`/api/download?id=${songVideo.id}&format=mp3&name=${encodeURIComponent(songVideo.name)}`}>Audio</Link>
+                            </>
+                            : "Fetching video link..."
+                          }
+                        </Typography>
                       </div>
                     </div>
                   </div>
