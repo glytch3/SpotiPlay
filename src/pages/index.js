@@ -2,13 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import qs from "qs";
 import YouTube from "react-youtube";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
@@ -16,7 +9,6 @@ import '../styles/index.css';
 import { Grid, Typography, Link } from '@mui/material';
 import dotenv from "dotenv";
 dotenv.config();
-
 
 export default function Home() {
   const [playlistLink, setPlaylistLink] = useState("");
@@ -27,7 +19,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [coverArtUrls, setCoverArtUrls] = useState([]);
 
-
   useEffect(() => {
     const getClientCredentials = async () => {
       const data = {
@@ -35,19 +26,15 @@ export default function Home() {
         client_id: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
         client_secret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET,
       };
-
       const options = {
         method: "POST",
         headers: { "content-type": "application/x-www-form-urlencoded" },
         data: qs.stringify(data),
         url: "https://accounts.spotify.com/api/token",
       };
-
       const response = await axios(options);
-
       setAccessToken(response.data.access_token);
     };
-
     getClientCredentials();
   }, []);
 
@@ -68,7 +55,6 @@ export default function Home() {
         },
       }
     );
-
     return response.data.items[0].id.videoId;
   }
 
@@ -76,7 +62,6 @@ export default function Home() {
     event.preventDefault();
     setIsLoading(true);
     const playlistId = playlistLink.split("playlist/")[1].split("?")[0];
-
     const response = await axios.get(
       `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
       {
@@ -85,15 +70,12 @@ export default function Home() {
         },
       }
     );
-
     const songsData = response.data.items.map((item) => ({
       name: item.track.name,
       coverArtUrl: item.track.album.images[0].url,
     }));
-
     setSongs(songsData.map((song) => song.name));
     setCoverArtUrls(songsData.map((song) => song.coverArtUrl));
-
     const firstSongVideo = {
       name: songsData[0].name,
       id: await fetchSongVideoId(songsData[0].name),
@@ -102,14 +84,11 @@ export default function Home() {
     setIsLoading(false);
   };
 
-
   const handleSongEnd = async () => {
     setIsLoading(true);
     const newIndex = (currentSongIndex + 1) % songs.length;
     setCurrentSongIndex(newIndex);
-
     const songAlreadyAdded = songVideos.some(songVideo => songVideo.name === songs[newIndex]);
-
     if (!songAlreadyAdded) {
       const nextSongVideo = { name: songs[newIndex], id: await fetchSongVideoId(songs[newIndex]) };
       setSongVideos([...songVideos, nextSongVideo]);
