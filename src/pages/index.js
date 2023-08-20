@@ -28,9 +28,9 @@ export default function Home() {
         client_secret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET,
       };
       // Log the client ID and client secret
-      console.log("hello!!!")
-      console.log("Client ID:", process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID);
-      console.log("Client Secret:", process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET);
+      console.log("SpotiPlay!!!")
+      // console.log("Client ID:", process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID);
+      // console.log("Client Secret:", process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET);
       const options = {
         method: "POST",
         headers: { "content-type": "application/x-www-form-urlencoded" },
