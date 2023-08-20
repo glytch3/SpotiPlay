@@ -27,6 +27,9 @@ export default function Home() {
         client_id: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
         client_secret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET,
       };
+      // Log the client ID and client secret
+      console.log("Client ID:", process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID);
+      console.log("Client Secret:", process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET);
       const options = {
         method: "POST",
         headers: { "content-type": "application/x-www-form-urlencoded" },
