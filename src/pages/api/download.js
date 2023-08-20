@@ -4,8 +4,7 @@ import ffmpegPath from 'ffmpeg-static';
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 
-
-export default async (req, res) => {
+async function downloadFunction(req, res) {
   const { id, format, name } = req.query;
 
   if (!id) {
@@ -32,4 +31,31 @@ export default async (req, res) => {
   } catch (error) {
     res.status(500).send('Error downloading video');
   }
-};
+}
+
+export default downloadFunction;
+
+
+
+
+// import ytdl from 'ytdl-core';
+
+// export default async (req, res) => {
+//   const { id, format } = req.query;
+
+//   if (!id) {
+//     return res.status(400).send('Missing video id');
+//   }
+
+//   try {
+//     const info = await ytdl.getInfo(`http://www.youtube.com/watch?v=${id}`);
+//     const formatInfo = ytdl.chooseFormat(info.formats, { quality: format === 'mp3' ? 'highestaudio' : 'highestvideo' });
+//     if (formatInfo) {
+//       res.status(200).send({ downloadUrl: formatInfo.url });
+//     } else {
+//       res.status(500).send('No suitable format found');
+//     }
+//   } catch (error) {
+//     res.status(500).send('Error getting video info');
+//   }
+// };

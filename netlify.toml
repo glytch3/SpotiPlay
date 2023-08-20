@@ -1,0 +1,4 @@
+[functions]
+  "downloadFunction" = { 
+    timeout = 26 
+  }
