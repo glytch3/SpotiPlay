@@ -1,4 +1,3 @@
-[functions]
-  "downloadFunction" = { 
-    timeout = 26 
-  }
+[build]
+  functions = "functions"
+  timeout = 26
